@@ -1,0 +1,9 @@
+{
+  "extends": ["universe/native", "plugin:@typescript-eslint/recommended"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "no-console": "warn"
+  }
+}
