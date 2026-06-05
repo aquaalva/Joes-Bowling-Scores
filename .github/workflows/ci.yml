@@ -23,15 +23,19 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: ./joes-bowling-scores
 
       - name: Debug TypeScript version
         run: npx tsc -v
+        working-directory: ./joes-bowling-scores
 
       - name: Type-check TypeScript
         run: npx tsc --noEmit
+        working-directory: ./joes-bowling-scores
 
       - name: Lint source files
         run: npm run lint
+        working-directory: ./joes-bowling-scores
 
       - name: Run tests
         run: npm test

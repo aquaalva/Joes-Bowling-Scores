@@ -178,7 +178,6 @@ export const validateFrames = (frames: FrameInput[]) => {
       continue;
     }
 
-    const firstRaw = parseRawRoll(frame.rolls[0] ?? '');
     const first = parseRollValue(frame.rolls, 0);
 
     if (first === null) {
@@ -221,8 +220,6 @@ export const validateFrames = (frames: FrameInput[]) => {
     return 'Frame 10 second roll must be 0-10 or /.';
   }
 
-  const firstRaw = parseRawRoll(tenthFrame.rolls[0] ?? '');
-  const secondRaw = parseRawRoll(tenthFrame.rolls[1] ?? '');
   const third = parseRollValue(tenthFrame.rolls, 2);
   const thirdRaw = parseRawRoll(tenthFrame.rolls[2] ?? '');
 
