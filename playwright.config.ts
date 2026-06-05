@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const nodeProcess = globalThis.process as { platform?: string; env?: { CI?: string } } | undefined;
+const isWindows = nodeProcess?.platform === 'win32';
+const isCI = Boolean(nodeProcess?.env?.CI);
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -16,11 +20,11 @@ export default defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: isCI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: isCI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: isCI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -72,10 +76,10 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: process.platform === 'win32'
+    command: isWindows
       ? 'set CI=1&& npm run web -- --port 3000'
       : 'CI=1 npm run web -- --port 3000',
     url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: !isCI,
   },
 });
