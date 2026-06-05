@@ -1,8 +1,15 @@
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import ScoreSheet from './src/components/ScoreSheet';
 
 export default function App() {
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = 'Bowling Score Sheet';
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScoreSheet />
