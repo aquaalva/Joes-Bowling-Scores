@@ -5,7 +5,7 @@ import ScoreSheet from './src/components/ScoreSheet';
 
 export default function App() {
   useEffect(() => {
-    const doc = globalThis.document as Document | undefined;
+    const doc = globalThis.document;
     if (doc) {
       doc.title = 'Bowling Score Sheet';
     }
