@@ -1,11 +1,6 @@
 import { FrameInput } from '../types';
 
-export const normalizeRollEntry = (
-  value: string,
-  frameIndex: number,
-  rollIndex: number,
-  frame: FrameInput
-) => {
+export const normalizeRollEntry = (value: string) => {
   const raw = value.toUpperCase().trim();
   if (!raw) {
     return '';
@@ -41,7 +36,7 @@ export const applyRollEntry = (
   value: string
 ) => {
   const nextFrames = frames.map((frame) => ({ rolls: [...frame.rolls] }));
-  const normalized = normalizeRollEntry(value, frameIndex, rollIndex, nextFrames[frameIndex]);
+  const normalized = normalizeRollEntry(value);
 
   if (frameIndex < 9 && normalized === 'X') {
     nextFrames[frameIndex].rolls[0] = '';

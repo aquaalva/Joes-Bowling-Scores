@@ -10,35 +10,6 @@ const initialFrames: FrameInput[] = Array.from({ length: 10 }, (_, index) => ({
 
 const frameLabel = (index: number) => `${index + 1}`;
 
-export const normalizeRollEntry = (value: string, frameIndex: number, rollIndex: number, frame: FrameInput) => {
-  const raw = value.toUpperCase().trim();
-  if (!raw) {
-    return '';
-  }
-  if (raw === 'X') {
-    return 'X';
-  }
-  if (raw === '/') {
-    return '/';
-  }
-
-  const digits = raw.replace(/[^0-9]/g, '');
-  if (!digits) {
-    return '';
-  }
-
-  const numberValue = Number(digits);
-  if (Number.isNaN(numberValue)) {
-    return '';
-  }
-
-  if (numberValue === 10) {
-    return 'X';
-  }
-
-  return String(numberValue);
-};
-
 const isStrikeFrame = (frame: FrameInput, frameIndex: number) => {
   return frameIndex < 9 && frame.rolls[1]?.toUpperCase() === 'X' && !frame.rolls[0]?.trim();
 };
