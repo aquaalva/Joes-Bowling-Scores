@@ -41,7 +41,7 @@ const ScoreSheet = () => {
     setFrames(initialFrames);
   };
 
-  const classNameProp = (className: string) => ({ className } as any);
+  const classNameProp = <P extends object>(className: string): P => ({ className } as unknown as P);
 
   return (
     <ScrollView {...classNameProp(styles.page)}>
