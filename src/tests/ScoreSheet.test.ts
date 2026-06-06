@@ -20,4 +20,20 @@ describe('ScoreSheet helpers', () => {
     expect(nextFrames[0].rolls[0]).toBe('9');
     expect(nextFrames[0].rolls[1]).toBe('');
   });
+
+  it('moves a strike entered in the first roll to the second roll for the 10th frame', () => {
+    const frames = createEmptyFrames();
+    const nextFrames = applyRollEntry(frames, 9, 0, 'X');
+
+    expect(nextFrames[9].rolls[0]).toBe('');
+    expect(nextFrames[9].rolls[1]).toBe('X');
+  });
+
+  it('allows numeric entries in the first roll for the 10th frame', () => {
+    const frames = createEmptyFrames();
+    const nextFrames = applyRollEntry(frames, 9, 0, '8');
+
+    expect(nextFrames[9].rolls[0]).toBe('8');
+    expect(nextFrames[9].rolls[1]).toBe('');
+  });
 });
