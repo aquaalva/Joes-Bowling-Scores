@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TextInputKeyPressEventData,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -50,7 +49,7 @@ const ScoreSheet = () => {
   const { total, frameScores } = useMemo(() => calculateBowlingScore(frames), [frames]);
 
   const queueFocus = (fIndex: number, rIndex: number) => {
-  setTimeout(() => {
+  globalThis.setTimeout(() => {
     const ref = inputRefs.current?.[fIndex]?.[rIndex];
     try {
       ref?.focus?.();
@@ -58,7 +57,7 @@ const ScoreSheet = () => {
       // ignore
     }
   }, 30);
-  };
+};
 
   const focusInput = (fIndex: number, rIndex: number) => {
     const ref = inputRefs.current?.[fIndex]?.[rIndex];
@@ -174,20 +173,27 @@ const ScoreSheet = () => {
   }, []);
 
   useEffect(() => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        focusInput(0, 0);
-      });
-    });
-  }, []);
-
-  useEffect(() => {
     if (pendingFocusRef.current) {
       const { frameIndex, rollIndex } = pendingFocusRef.current;
       pendingFocusRef.current = null;
       queueFocus(frameIndex, rollIndex);
     }
   }, [frames]);
+
+  type KeyPressEvent = NativeSyntheticEvent<{ key: string }>;
+
+// Returns all handlers for a specific input
+const getInputHandlers = (frameIndex: number, rollIndex: number) => {
+  return {
+    onChangeText: (text: string) => {
+      handleRollEntry(frameIndex, rollIndex, text);
+    },
+
+    onKeyPress: (e: KeyPressEvent) => {
+      handleKeyPress(e.nativeEvent.key, frameIndex, rollIndex);
+    },
+  };
+};
 
   return (
     <ScrollView style={styles.page} contentContainerStyle={styles.pageContent}>
@@ -216,10 +222,7 @@ const ScoreSheet = () => {
                       keyboardType="default"
                       autoCapitalize="characters"
                       value={getDisplayRoll(frame, frameIndex, 0)}
-                      onChangeText={(text: string) => handleRollEntry(frameIndex, 0, text)}
-                      onKeyPress={(e: NativeSyntheticEvent<TextInputKeyPressEventData>) =>
-  handleKeyPress(e.nativeEvent.key, frameIndex, 0)
-}
+                      {...getInputHandlers(frameIndex, 0)}
                       placeholder=""
                       maxLength={1}
                     />
@@ -234,10 +237,7 @@ const ScoreSheet = () => {
                       keyboardType="default"
                       autoCapitalize="characters"
                       value={getDisplayRoll(frame, frameIndex, 1)}
-                      onChangeText={(text: string) => handleRollEntry(frameIndex, 1, text)}
-                      onKeyPress={(e: NativeSyntheticEvent<TextInputKeyPressEventData>) =>
-  handleKeyPress(e.nativeEvent.key, frameIndex, 1)
-}
+                      {...getInputHandlers(frameIndex, 1)}
                       placeholder=""
                       maxLength={1}
                     />
@@ -254,10 +254,7 @@ const ScoreSheet = () => {
                       keyboardType="default"
                       autoCapitalize="characters"
                       value={getDisplayRoll(frame, frameIndex, 2)}
-                      onChangeText={(text: string) => handleRollEntry(frameIndex, 2, text)}
-                      onKeyPress={(e: NativeSyntheticEvent<TextInputKeyPressEventData>) =>
-  handleKeyPress(e.nativeEvent.key, frameIndex, 2)
-}
+                      {...getInputHandlers(frameIndex, 2)}
                       placeholder=""
                       maxLength={1}
                     />
